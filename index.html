@@ -11,42 +11,50 @@
         .bot { background: #fff; align-self: flex-start; }
         .user { background: #dcf8c6; align-self: flex-end; }
         .btn-option { display: block; margin: 5px 0; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; width: 100%; }
+        .file-link { color: #007bff; text-decoration: underline; display: block; margin-top: 5px; }
         #active-result { margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div id="chat-container">
-    <div class="message bot">مرحباً! يرجى اختيار القسم المطلوب للاطلاع على ملفاته:</div>
+    <div class="message bot">أهلاً بك! اختر القسم للمتابعة:</div>
     
     <div id="options-area">
-        <button class="btn-option" onclick="showFiles('320')">عرض ملفات 320</button>
-        <button class="btn-option" onclick="showFiles('330')">عرض ملفات 330</button>
-        <button class="btn-option" onclick="showFiles('777')">عرض ملفات 777</button>
-        <button class="btn-option" onclick="showFiles('787')">عرض ملفات 787</button> </div>
+        <button class="btn-option" onclick="showSubFiles('320')">قسم 320</button>
+        <button class="btn-option" onclick="showSubFiles('330')">قسم 330</button>
+    </div>
 
     <div id="active-result"></div>
 </div>
 
 <script>
-    // لتحديث البيانات مستقبلاً، فقط عدل هذا الجزء
+    // هيكل البيانات: القسم -> الملفات
+    // الملف يتكون من اسم ورابط (URL)
     const filesData = {
-        '320': ['ملف 320 - رقم 1', 'ملف 320 - رقم 2'],
-        '330': ['تقرير 330 - أ', 'تقرير 330 - ب'],
-        '777': ['بيانات 777 - الأساسي'],
-        '787': ['ملف 787 - الأول', 'ملف 787 - الثاني'] // تمت إضافة بيانات القسم هنا
+        '320': [
+            { name: 'ملف المخططات', url: 'files/320_plan.pdf' },
+            { name: 'ملف الصيانة', url: 'files/320_fix.pdf' }
+        ],
+        '330': [
+            { name: 'دليل المستخدم', url: 'files/330_guide.pdf' }
+        ]
     };
 
-    function showFiles(category) {
+    function showSubFiles(category) {
         const resultArea = document.getElementById('active-result');
-        
-        // التحقق من وجود بيانات للقسم
-        if(filesData[category]) {
+        const files = filesData[category];
+
+        if (files) {
+            let listHtml = files.map(file => 
+                `<a href="${file.url}" target="_blank" class="file-link">📁 ${file.name}</a>`
+            ).join('');
+
             resultArea.innerHTML = `
                 <div class="message user">اخترت: ${category}</div>
                 <div class="message bot">
                     <b>الملفات المتاحة في ${category}:</b><br>
-                    ${filesData[category].map(file => `• ${file}<br>`).join('')}
+                    ${listHtml}
                 </div>
             `;
         }
