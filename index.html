@@ -3,60 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة الملفات</title>
+    <title>مركز الملفات</title>
     <style>
-        body { font-family: sans-serif; background: #e5ddd5; margin: 0; padding: 10px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #e5ddd5; margin: 0; padding: 10px; }
         #chat-container { max-width: 500px; margin: auto; display: flex; flex-direction: column; gap: 10px; }
-        .message { padding: 10px; border-radius: 10px; max-width: 80%; margin-bottom: 5px; }
-        .bot { background: #fff; align-self: flex-start; }
-        .user { background: #dcf8c6; align-self: flex-end; }
-        .btn-option { display: block; margin: 5px 0; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; width: 100%; }
-        .file-link { color: #007bff; text-decoration: underline; display: block; margin-top: 5px; }
-        #active-result { margin-top: 10px; }
+        .message { padding: 12px; border-radius: 15px; max-width: 85%; margin-bottom: 5px; line-height: 1.5; }
+        .bot { background: #fff; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .user { background: #dcf8c6; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .btn-option { display: block; margin: 8px 0; padding: 12px; background: #007bff; color: white; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-size: 16px; }
+        .file-link { color: #007bff; text-decoration: none; display: block; padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; }
+        .file-link:hover { background: #f0f0f0; }
+        #result-container { margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div id="chat-container">
-    <div class="message bot">أهلاً بك! اختر القسم للمتابعة:</div>
+    <div class="message bot">مرحباً بك! اختر القسم لعرض الملفات الموجودة بداخله:</div>
     
-    <div id="options-area">
-        <button class="btn-option" onclick="showSubFiles('320')">قسم 320</button>
-        <button class="btn-option" onclick="showSubFiles('330')">قسم 330</button>
+    <div id="main-menu">
+        <button class="btn-option" onclick="showCategoryFiles('320')">قسم 320</button>
+        <button class="btn-option" onclick="showCategoryFiles('330')">قسم 330</button>
+        <button class="btn-option" onclick="showCategoryFiles('777')">قسم 777</button>
+        <button class="btn-option" onclick="showCategoryFiles('787')">قسم 787</button>
     </div>
 
-    <div id="active-result"></div>
+    <div id="result-container"></div>
 </div>
 
 <script>
-    // هيكل البيانات: القسم -> الملفات
-    // الملف يتكون من اسم ورابط (URL)
-    const filesData = {
+    // قاعدة البيانات: عدل هنا فقط لإضافة ملفات جديدة
+    const database = {
         '320': [
-            { name: 'ملف المخططات', url: 'files/320_plan.pdf' },
-            { name: 'ملف الصيانة', url: 'files/320_fix.pdf' }
+            { name: 'ملف الأوزان PDF', url: '#' },
+            { name: 'جداول البيانات XLSX', url: '#' }
         ],
         '330': [
-            { name: 'دليل المستخدم', url: 'files/330_guide.pdf' }
+            { name: 'دليل التشغيل', url: '#' }
+        ],
+        '777': [
+            { name: 'مخطط 1', url: '#' },
+            { name: 'مخطط 2', url: '#' },
+            { name: 'مخطط 3', url: '#' }
+        ],
+        '787': [
+            { name: 'تقرير الطيران', url: '#' }
         ]
     };
 
-    function showSubFiles(category) {
-        const resultArea = document.getElementById('active-result');
-        const files = filesData[category];
+    function showCategoryFiles(categoryId) {
+        const container = document.getElementById('result-container');
+        const files = database[categoryId];
 
         if (files) {
-            let listHtml = files.map(file => 
-                `<a href="${file.url}" target="_blank" class="file-link">📁 ${file.name}</a>`
+            let filesHtml = files.map(file => 
+                `<a href="${file.url}" target="_blank" class="file-link">📄 ${file.name}</a>`
             ).join('');
 
-            resultArea.innerHTML = `
-                <div class="message user">اخترت: ${category}</div>
+            container.innerHTML = `
+                <div class="message user">عرض ملفات: ${categoryId}</div>
                 <div class="message bot">
-                    <b>الملفات المتاحة في ${category}:</b><br>
-                    ${listHtml}
+                    الرجاء اختيار الملف المطلوب:<br>
+                    ${filesHtml}
+                    <button class="btn-option" style="background:#6c757d; margin-top:10px; padding:5px; font-size:12px;" onclick="location.reload()">رجوع للقائمة الرئيسية</button>
                 </div>
             `;
+            // إخفاء القائمة الرئيسية عند اختيار قسم
+            document.getElementById('main-menu').style.display = 'none';
         }
     }
 </script>
