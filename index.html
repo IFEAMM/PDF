@@ -7,46 +7,46 @@
     <style>
         body { font-family: sans-serif; background: #e5ddd5; margin: 0; padding: 10px; }
         #chat-container { max-width: 500px; margin: auto; display: flex; flex-direction: column; gap: 10px; }
-        .message { padding: 10px; border-radius: 10px; max-width: 80%; }
+        .message { padding: 10px; border-radius: 10px; max-width: 80%; margin-bottom: 10px; }
         .bot { background: #fff; align-self: flex-start; }
         .user { background: #dcf8c6; align-self: flex-end; }
-        .btn-option { display: block; margin: 5px 0; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .btn-option { display: block; margin: 5px 0; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; width: 100%; }
+        /* هذا القسم هو الذي سيتم تحديثه */
+        #active-result { margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div id="chat-container">
-    <div class="message bot" id="welcome-msg">مرحباً! يرجى اختيار القسم المطلوب:</div>
+    <div class="message bot">مرحباً! يرجى اختيار القسم المطلوب للاطلاع على ملفاته:</div>
+    
     <div id="options-area">
-        <button class="btn-option" onclick="showFiles('320')">320</button>
-        <button class="btn-option" onclick="showFiles('330')">330</button>
-        <button class="btn-option" onclick="showFiles('777')">777</button>
-        <button class="btn-option" onclick="showFiles('787')">787</button>
+        <button class="btn-option" onclick="showFiles('320')">عرض ملفات 320</button>
+        <button class="btn-option" onclick="showFiles('330')">عرض ملفات 330</button>
+        <button class="btn-option" onclick="showFiles('777')">عرض ملفات 777</button>
     </div>
-    <div id="result-area"></div>
+
+    <div id="active-result"></div>
 </div>
 
 <script>
-    // لتحديث القائمة، أضف ملفاتك هنا فقط
     const filesData = {
-        '320': ['ملف 1', 'ملف 2'],
-        '330': ['تقرير جديد', 'بيانات العمل'],
-        '777': ['ملف 777-أ'],
-        '787': ['ملف 787-أ', 'ملف 787-ب']
+        '320': ['ملف 320 - رقم 1', 'ملف 320 - رقم 2'],
+        '330': ['تقرير 330 - أ', 'تقرير 330 - ب'],
+        '777': ['بيانات 777 - الأساسي']
     };
 
     function showFiles(category) {
-        const area = document.getElementById('result-area');
-        let html = `<div class="message user">اخترت: ${category}</div>`;
-        html += `<div class="message bot">الملفات المتاحة في ${category}:<br>`;
+        const resultArea = document.getElementById('active-result');
         
-        filesData[category].forEach(file => {
-            html += `<b>• ${file}</b><br>`;
-        });
-        
-        html += `</div>`;
-        area.innerHTML += html;
-        window.scrollTo(0, document.body.scrollHeight);
+        // هنا نقوم بتحديث المحتوى فقط (يتم مسح القديم تلقائياً)
+        resultArea.innerHTML = `
+            <div class="message user">اخترت: ${category}</div>
+            <div class="message bot">
+                <b>الملفات المتاحة في ${category}:</b><br>
+                ${filesData[category].map(file => `• ${file}<br>`).join('')}
+            </div>
+        `;
     }
 </script>
 
