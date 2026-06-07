@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الملفات</title>
+    <style>
+        body { font-family: sans-serif; background: #e5ddd5; margin: 0; padding: 10px; }
+        #chat-container { max-width: 500px; margin: auto; display: flex; flex-direction: column; gap: 10px; }
+        .message { padding: 10px; border-radius: 10px; max-width: 80%; }
+        .bot { background: #fff; align-self: flex-start; }
+        .user { background: #dcf8c6; align-self: flex-end; }
+        .btn-option { display: block; margin: 5px 0; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div id="chat-container">
+    <div class="message bot" id="welcome-msg">مرحباً! يرجى اختيار القسم المطلوب:</div>
+    <div id="options-area">
+        <button class="btn-option" onclick="showFiles('320')">320</button>
+        <button class="btn-option" onclick="showFiles('330')">330</button>
+        <button class="btn-option" onclick="showFiles('777')">777</button>
+        <button class="btn-option" onclick="showFiles('787')">787</button>
+    </div>
+    <div id="result-area"></div>
+</div>
+
+<script>
+    // لتحديث القائمة، أضف ملفاتك هنا فقط
+    const filesData = {
+        '320': ['ملف 1', 'ملف 2'],
+        '330': ['تقرير جديد', 'بيانات العمل'],
+        '777': ['ملف 777-أ'],
+        '787': ['ملف 787-أ', 'ملف 787-ب']
+    };
+
+    function showFiles(category) {
+        const area = document.getElementById('result-area');
+        let html = `<div class="message user">اخترت: ${category}</div>`;
+        html += `<div class="message bot">الملفات المتاحة في ${category}:<br>`;
+        
+        filesData[category].forEach(file => {
+            html += `<b>• ${file}</b><br>`;
+        });
+        
+        html += `</div>`;
+        area.innerHTML += html;
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+</script>
+
+</body>
+</html>
